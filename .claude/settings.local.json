@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__exa__web_search_exa",
+      "mcp__open-websearch__search",
+      "WebSearch",
+      "WebFetch(domain:docs.claude.com)",
+      "WebFetch(domain:medium.com)",
+      "WebFetch(domain:blog.wenhaofree.com)",
+      "WebFetch(domain:alexop.dev)"
+    ]
+  }
+}
