@@ -35,13 +35,29 @@ Use multiple sources (MUST search, do NOT rely solely on training data):
 - Limitations, criticisms, and open problems
 
 ### Step 4: Write report
-Save as markdown file in current directory. Use this structure:
+
+#### File output rules
+- Before writing, inspect the project directory structure (`ls` root and relevant subdirectories)
+- Follow the existing directory organization conventions
+- Place research files under `research/{topic}/` subdirectory (e.g. `research/clawdbot/`)
+- Multiple documents about the same topic MUST live in the same subdirectory
+- Keep naming and grouping consistent with sibling directories
+
+#### Determine deliverables
+- For deployable / installable / usable technologies, produce TWO documents:
+  1. **Overview report** — what it is, why it matters, pros/cons analysis
+  2. **Hands-on guide** — how to deploy, configure, and use it (full step-by-step)
+- For pure concepts / theories / comparisons, a single overview report is sufficient
+- If the user's request contains specific questions, answer them directly at the top of the report (e.g. a "Key Questions Answered" section)
+
+#### Overview report structure
 
 ```
 # {Topic} Deep Research Report
 > Date: {{date}}
 
 ## TL;DR (one paragraph)
+## Key Questions Answered (if user asked specific questions)
 ## Core Concepts
 ## How It Works (with diagrams if helpful)
 ## Framework/Tool Comparison (table)
@@ -50,6 +66,14 @@ Save as markdown file in current directory. Use this structure:
 ## Getting Started (beginner path)
 ## Sources
 ```
+
+#### Hands-on guide structure rules
+- Organize by **user workflow**, NOT by knowledge category
+- If there are multiple deployment methods / approaches, each MUST be a **complete, self-contained pipeline** from start to finish
+- Readers should pick one approach and follow it top-to-bottom without jumping to other sections
+- Shared configuration (e.g. API options) MUST be repeated inside each approach — do NOT extract into a separate chapter that forces readers to jump around
+- Each step should include the exact commands, config snippets, and expected output
+- Clearly label which approach each instruction belongs to (e.g. "A-3", "B-2")
 
 ### Quality rules
 - All comparisons: at least cover positioning, pros/cons, use cases, community activity
