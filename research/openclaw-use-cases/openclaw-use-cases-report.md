@@ -1,4 +1,4 @@
-# Clawdbot (OpenClaw) 使用场景深度调研报告
+# OpenClaw 使用场景深度调研报告
 
 > 调研日期：2026-02-02
 > 受众：技术开发者、产品经理
@@ -26,7 +26,7 @@
 
 ### 核心问题
 
-Clawdbot/OpenClaw 适合用在什么地方？从"谁在用、怎么用、效果如何"三个角度切入，覆盖从个人生活到商业运营的完整场景图谱。
+OpenClaw 适合用在什么地方？从"谁在用、怎么用、效果如何"三个角度切入，覆盖从个人生活到商业运营的完整场景图谱。
 
 ### 研究边界
 
@@ -75,7 +75,7 @@ Clawdbot/OpenClaw 适合用在什么地方？从"谁在用、怎么用、效果�
 
 **具体做什么**：AI 自动连接 Gmail（通过 Pub/Sub），对收件箱进行智能分类（紧急/重要/普通/垃圾）、优先级排序、内容摘要生成，并可根据预设规则自动草拟回复。用户可以在 WhatsApp 中直接回复"回复这封邮件，说明周三可以开会"，AI 自动生成并发送回复 [S5][S11]。
 
-**真实案例**：Danish Dhamani 在 YouTube 上发布了详细教程，展示了如何批量标记数百封未读邮件，通过阅读邮件正文（而非仅凭主题行）进行二次分类，**整个流程节省了约 4 小时工作量** [S5]。howtouseclawdbot.com 的示例展示了 AI 将 12 封未读邮件分为"紧急"和"可等待"两类的交互过程 [S4]。
+**真实案例**：Danish Dhamani 在 YouTube 上发布了详细教程，展示了如何批量标记数百封未读邮件，通过阅读邮件正文（而非仅凭主题行）进行二次分类，**整个流程节省了约 4 小时工作量** [S5]。社区示例展示了 AI 将 12 封未读邮件分为"紧急"和"可等待"两类的交互过程 [S4]。
 
 **效果评估**：实际效果突出，是 ROI 最高的场景之一。但需注意安全——有安全专家建议为 OpenClaw 创建独立的 Gmail 账号，避免直接访问主邮箱 [S17]。
 
@@ -190,7 +190,7 @@ OpenClaw 具备 Shell 执行能力，可以直接运行 git 命令、执行脚�
 
 **具体做什么**：在 Slack 的客户支持渠道中部署 AI Agent，自动回答常见问题、分类工单、升级复杂问题到人工客服 [S5]。
 
-**真实案例**：VelvetShark 将此列为九大自动化之一。一位创作者声称用 OpenClaw 替换了月均 $3,000 的 SaaS 工具订阅（包括客服工具、内容管理等），虽然具体数字难以独立验证。Greg Isenberg 在 LinkedIn 上发文称："You probably can make $10m+ in 2026 by installing, configuring and optimizing clawdbots for businesses." [S6]
+**真实案例**：VelvetShark 将此列为九大自动化之一。一位创作者声称用 OpenClaw 替换了月均 $3,000 的 SaaS 工具订阅（包括客服工具、内容管理等），虽然具体数字难以独立验证。Greg Isenberg 在 LinkedIn 上发文称："You probably can make $10m+ in 2026 by installing, configuring and optimizing OpenClaw for businesses." [S6]
 
 **效果评估**：对小型团队的内部支持渠道有价值，但安全和稳定性不足以支撑面向外部客户的正式服务。
 
@@ -260,7 +260,7 @@ AIMultiple 在 RunPod 上进行了系统性实测 [S4]，验证了以下场景�
 
 #### 6.2 文件自动分类
 
-AI 自动扫描指定目录（如 Downloads），按类型（文档、图片、代码、压缩包等）创建子目录并移动文件 [S4]。Artifact Innovations 的评价："Typical AI: Here's how you should structure your downloads folder. Clawdbot-style execution: Your downloads folder gets structured, and you receive a confirmation message." [S8]
+AI 自动扫描指定目录（如 Downloads），按类型（文档、图片、代码、压缩包等）创建子目录并移动文件 [S4]。Artifact Innovations 的评价："Typical AI: Here's how you should structure your downloads folder. OpenClaw-style execution: Your downloads folder gets structured, and you receive a confirmation message." [S8]
 
 #### 6.3 PDF/CSV 数据提取与分析
 
@@ -338,7 +338,7 @@ Kitze 建议对不同 Persona 使用不同级别的模型 [S6]：高信任场景
 
 | 场景 | 核心原因 | 风险等级 | 推荐替代方案 |
 |------|---------|---------|------------|
-| **企业生产环境** | 缺乏审计日志、RBAC 权限控制、合规认证；53% 企业一个周末就给了特权访问 [S16]。Forrester："Do I think Clawdbot is barging into your enterprise today or tomorrow? No." [S8] | 极高 | Microsoft Copilot、Azure AI、AWS Bedrock |
+| **企业生产环境** | 缺乏审计日志、RBAC 权限控制、合规认证；53% 企业一个周末就给了特权访问 [S16]。Forrester："Do I think OpenClaw is barging into your enterprise today or tomorrow? No." [S8] | 极高 | Microsoft Copilot、Azure AI、AWS Bedrock |
 | **敏感数据处理（医疗/金融）** | 凭证明文存储 [S15]；AI 调用需将数据发送至 API；不符合 HIPAA/PCI-DSS 等合规要求。安全专家建议使用"去标识化系统" [S17] | 极高 | 合规认证的行业解决方案 |
 | **纯编程开发** | Nate Herkelman 100 小时对比："Claude Code 在编程场景 ROI 更高" [S8][S14]。OpenClaw 优势在于非编程场景的独特覆盖 | 低 | Claude Code、Cursor、GitHub Copilot |
 | **非技术用户独立使用** | 安装需要终端操作、Docker、API Key 管理。台湾用户反馈："安装起来很'工程'，感觉非工程师的人用起来头会很涨" [S17]。Shelly Palmer："Getting there was harder than anyone on social media is admitting" [S8] | 中 | ChatGPT App、Claude App、Apple Intelligence |
@@ -455,7 +455,7 @@ Kitze 建议对不同 Persona 使用不同级别的模型 [S6]：高信任场景
 - **Prompt Injection 通过邮件的演示**：社区报告了恶意邮件让 AI 打开 Spotify 播放音乐的案例——虽然无害但证明了通过邮件劫持 Agent 的攻击可行性
 - **技能市场供应链攻击**：ClawHub 中发现了伪装成合法技能的 Prompt Injection 攻击 [S15]
 - **企业影子 IT**：Noma Security 报告 53% 企业客户在一个周末内给了特权访问，安全团队毫不知情 [S16]
-- **加密诈骗者劫持旧品牌名**：TechCrunch、CNBC 报道了利用 Clawdbot/Moltbot 名称的加密诈骗 [S9]
+- **加密诈骗者劫持旧品牌名**：TechCrunch、CNBC 报道了利用 Clawdbot/Moltbot（OpenClaw 旧名）的加密诈骗 [S9]
 
 ### 按场景风险等级矩阵
 
@@ -580,16 +580,16 @@ OpenClaw 代表了个人 AI Agent 从概念到消费级产品的转折点。100,
 | S4 | AIMultiple 实测评测 | 第三方评测 | https://research.aimultiple.com/moltbot/ |
 | S5 | VelvetShark YouTube "9 automations + 4 wild builds" | 视频评测 | https://www.youtube.com/watch?v=52kOmSQGt_E |
 | S6 | Greg Isenberg x Kitze 访谈 | 播客访谈 | https://www.youtube.com/watch?v=YRhGtHfs1Lw |
-| S7 | AJ Stuyvenberg "Clawdbot bought me a car" | 一手案例 | https://aaronstuyvenberg.com/posts/clawd-bought-a-car |
+| S7 | AJ Stuyvenberg "OpenClaw bought me a car" | 一手案例 | https://aaronstuyvenberg.com/posts/clawd-bought-a-car |
 | S8 | Shelly Palmer / Forrester / Nate Herkelman 使用评测 | 专业评测 | https://www.forrester.com/blogs/ready-for-clawdbot-to-click-and-claw-its-way-into-your-environment/ |
 | S9 | Rahul Goyal / 综合分析 | 综合分析 | 多平台（LinkedIn、VentureBeat 等） |
 | S10 | IBM Technology 播客 | 行业讨论 | https://www.ibm.com/think/news/clawdbot-ai-agent-testing-limits-vertical-integration |
-| S11 | OpenClaw Wiki / 社区 | 社区 | https://community.home-assistant.io/t/openclaw-clawdbot-on-home-assistant/981467 |
+| S11 | OpenClaw Wiki / 社区 | 社区 | https://community.home-assistant.io/t/openclaw-on-home-assistant/981467 |
 | S12 | DigitalOcean 介绍 | 部署指南 | https://www.digitalocean.com/resources/articles/what-is-openclaw |
 | S13 | Turing College 文章 | 综合介绍 | https://www.turingcollege.com/blog/openclaw |
-| S14 | o-mega.ai / Nate Herkelman / 多代理指南 | 技术指南 | https://zenvanriel.nl/ai-engineer-blog/clawdbot-multi-agent-orchestration-guide/ |
+| S14 | o-mega.ai / Nate Herkelman / 多代理指南 | 技术指南 | https://zenvanriel.nl/ai-engineer-blog/openclaw-multi-agent-orchestration-guide/ |
 | S15 | Cisco 安全博客 / 安全机构 | 安全分析 | https://blogs.cisco.com/ai/personal-ai-agents-like-openclaw-are-a-security-nightmare |
-| S16 | Noma Security / Breached.company 报告 | 安全研究 | https://breached.company/over-1-000-clawdbot-ai-agents-exposed-on-the-public-internet/ |
+| S16 | Noma Security / Breached.company 报告 | 安全研究 | https://breached.company/over-1-000-openclaw-ai-agents-exposed-on-the-public-internet/ |
 | S17 | Hacker News 社区讨论 | 社区讨论 | https://news.ycombinator.com/item?id=46760237 |
 
 ---

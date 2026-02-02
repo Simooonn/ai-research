@@ -1,13 +1,13 @@
-# Clawdbot (Moltbot/OpenClaw) 部署与使用完全指南
+# OpenClaw 部署与使用完全指南
 
 > 日期：2026-01-31
-> 基于 clawdbot-deep-research.md 的深入调研扩展
+> 基于 openclaw-deep-research.md 的深入调研扩展
 
 ---
 
 ## TL;DR
 
-本文是一份面向零基础用户的 Clawdbot（现更名 Moltbot → OpenClaw）**完整部署和使用指南**。涵盖硬件选择（不一定要 Mac Mini！）、4 种部署方案（每种都是从头到尾的完整流程）、自定义 API URL 配置（✅ 支持）、通讯平台接入、安全配置等。
+本文是一份面向零基础用户的 OpenClaw（原名 Clawdbot）**完整部署和使用指南**。涵盖硬件选择（不一定要 Mac Mini！）、4 种部署方案（每种都是从头到尾的完整流程）、自定义 API URL 配置（✅ 支持）、通讯平台接入、安全配置等。
 
 **阅读方式**：先看"第一章"选择你的方案，然后直接跳到对应方案的章节，从头跟到尾即可完成部署。
 
@@ -25,7 +25,7 @@
 | **运行时** | Node.js >= 22 | Node.js LTS 最新版 | 必须 |
 | **网络** | 稳定网络连接 | 有线连接更稳定 | 需要连接 AI API 和通讯平台 |
 
-> ⚠️ **关键认知**：Clawdbot 本身**不跑本地大模型**，它通过 API 调用远端的 Claude/GPT。所以对硬件要求很低——它本质上是一个**网关 + Agent 调度器**，不是需要 GPU 的推理引擎。
+> ⚠️ **关键认知**：OpenClaw 本身**不跑本地大模型**，它通过 API 调用远端的 Claude/GPT。所以对硬件要求很低——它本质上是一个**网关 + Agent 调度器**，不是需要 GPU 的推理引擎。
 
 ### Mac Mini M4 是最低要求吗？
 
@@ -93,14 +93,14 @@ wsl --install
 # 然后在 WSL 中执行上面的 Linux 命令
 ```
 
-### A-2. 安装 Moltbot
+### A-2. 安装 OpenClaw
 
 ```bash
 # 方式 1：一行命令安装（推荐）
-curl -fsSL https://molt.bot/install.sh | bash
+curl -fsSL https://openclaw.ai/install.sh | bash
 
 # 方式 2：通过 npm 全局安装
-npm install -g moltbot@latest
+npm install -g openclaw@latest
 
 # 方式 3：从源码构建（开发者）
 git clone https://github.com/openclaw/openclaw.git
@@ -112,13 +112,13 @@ pnpm run build
 安装完成后验证：
 
 ```bash
-moltbot --version
+openclaw --version
 # 应该输出版本号，如 1.x.x
 ```
 
 ### A-3. 配置 AI 模型（选择一种）
 
-这一步决定 Moltbot 用哪个 AI 大脑。你有 4 种选择：
+这一步决定 OpenClaw 用哪个 AI 大脑。你有 4 种选择：
 
 ---
 
@@ -128,11 +128,11 @@ moltbot --version
 
 ```bash
 # 运行配置向导，选择 Anthropic
-moltbot onboard --install-daemon
+openclaw onboard --install-daemon
 # 向导中选择：Anthropic → 粘贴 API Key → 选模型
 ```
 
-向导完成后，配置会自动写入 `~/.moltbot/config.json`，内容类似：
+向导完成后，配置会自动写入 `~/.openclaw/config.json`，内容类似：
 
 ```json
 {
@@ -155,12 +155,12 @@ moltbot onboard --install-daemon
 
 ```bash
 # 先运行向导完成基本配置
-moltbot onboard --install-daemon
+openclaw onboard --install-daemon
 
 # 然后手动编辑配置文件，添加自定义 Base URL
 ```
 
-编辑 `~/.moltbot/config.json`（或 `~/.openclaw/openclaw.json`）：
+编辑 `~/.openclaw/config.json`（或 `~/.openclaw/openclaw.json`）：
 
 ```json
 {
@@ -179,7 +179,7 @@ moltbot onboard --install-daemon
 保存后重启：
 
 ```bash
-moltbot restart
+openclaw restart
 ```
 
 ---
@@ -195,7 +195,7 @@ openclaw onboard --auth-choice apiKey \
   --token "sk-or-xxxxxxxxxxxxxxxx"
 ```
 
-或手动编辑 `~/.moltbot/config.json`：
+或手动编辑 `~/.openclaw/config.json`：
 
 ```json
 {
@@ -218,7 +218,7 @@ openclaw onboard --auth-choice apiKey \
 
 **前置：** 你有一个兼容 OpenAI 格式的 API 服务地址和 Key
 
-编辑 `~/.moltbot/config.json`：
+编辑 `~/.openclaw/config.json`：
 
 ```json
 {
@@ -247,48 +247,48 @@ openclaw onboard --auth-choice apiKey \
 
 ```bash
 # WhatsApp（会弹出二维码，用手机扫码）
-moltbot channels login whatsapp
+openclaw channels login whatsapp
 
 # Telegram（需要先在 @BotFather 创建 Bot，获取 Token）
-moltbot channels login telegram
+openclaw channels login telegram
 
 # Discord（需要在 Discord Developer Portal 创建 Bot）
-moltbot channels login discord
+openclaw channels login discord
 
 # Slack
-moltbot channels login slack
+openclaw channels login slack
 
 # iMessage（仅 macOS，需要授权辅助功能权限）
-moltbot channels login imessage
+openclaw channels login imessage
 ```
 
 ### A-5. 安全加固（强烈建议）
 
 ```bash
 # 运行安全诊断
-moltbot doctor
+openclaw doctor
 
 # 启用认证（防止未授权访问）
-moltbot security --enable-auth
+openclaw security --enable-auth
 
 # 限制网络监听（仅本机访问）
-moltbot configure --bind localhost
+openclaw configure --bind localhost
 
 # 配置 DM Pairing（限制谁能和你的 AI 对话）
-moltbot pairing
+openclaw pairing
 ```
 
 ### A-6. 验证并开始使用
 
 ```bash
 # 检查运行状态
-moltbot status
+openclaw status
 
 # 查看日志
-moltbot logs
+openclaw logs
 
 # 打开 Web Dashboard（可选）
-moltbot dashboard
+openclaw dashboard
 ```
 
 然后在你连接的通讯应用中给 AI 发消息即可！试试发 "Hello, what can you do?"
@@ -299,10 +299,10 @@ moltbot dashboard
 
 ```bash
 # macOS：使用 launchd
-moltbot daemon install
+openclaw daemon install
 
 # Linux：使用 systemd
-moltbot daemon install
+openclaw daemon install
 ```
 
 ---
@@ -332,10 +332,10 @@ sudo usermod -aG docker $USER
 
 ```bash
 docker run -d \
-  --name moltbot \
+  --name openclaw \
   --restart unless-stopped \
   -e ANTHROPIC_API_KEY="sk-ant-xxxxxxxxxxxxxxxx" \
-  -v moltbot_data:/root/.moltbot \
+  -v openclaw_data:/root/.openclaw \
   -p 3000:3000 \
   ghcr.io/openclaw/openclaw:latest
 ```
@@ -346,11 +346,11 @@ docker run -d \
 
 ```bash
 docker run -d \
-  --name moltbot \
+  --name openclaw \
   --restart unless-stopped \
   -e ANTHROPIC_API_KEY="sk-ant-xxxxxxxxxxxxxxxx" \
   -e ANTHROPIC_BASE_URL="https://your-proxy.com/v1" \
-  -v moltbot_data:/root/.moltbot \
+  -v openclaw_data:/root/.openclaw \
   -p 3000:3000 \
   ghcr.io/openclaw/openclaw:latest
 ```
@@ -361,10 +361,10 @@ docker run -d \
 
 ```bash
 docker run -d \
-  --name moltbot \
+  --name openclaw \
   --restart unless-stopped \
   -e OPENROUTER_API_KEY="sk-or-xxxxxxxxxxxxxxxx" \
-  -v moltbot_data:/root/.moltbot \
+  -v openclaw_data:/root/.openclaw \
   -p 3000:3000 \
   ghcr.io/openclaw/openclaw:latest
 ```
@@ -375,11 +375,11 @@ docker run -d \
 
 ```bash
 docker run -d \
-  --name moltbot \
+  --name openclaw \
   --restart unless-stopped \
   -e OPENAI_API_KEY="sk-xxxxxxxxxxxxxxxx" \
   -e OPENAI_BASE_URL="https://your-api-service.com/v1" \
-  -v moltbot_data:/root/.moltbot \
+  -v openclaw_data:/root/.openclaw \
   -p 3000:3000 \
   ghcr.io/openclaw/openclaw:latest
 ```
@@ -390,7 +390,7 @@ docker run -d \
 
 ```bash
 # 进入容器运行配置向导
-docker exec -it moltbot moltbot onboard
+docker exec -it openclaw openclaw onboard
 
 # 向导中配置：
 # 1. 如果上一步已通过环境变量设了 API Key，这里跳过即可
@@ -402,39 +402,39 @@ docker exec -it moltbot moltbot onboard
 
 ```bash
 # 在容器内操作
-docker exec -it moltbot moltbot channels login whatsapp
-docker exec -it moltbot moltbot channels login telegram
-docker exec -it moltbot moltbot channels login discord
+docker exec -it openclaw openclaw channels login whatsapp
+docker exec -it openclaw openclaw channels login telegram
+docker exec -it openclaw openclaw channels login discord
 ```
 
 ### B-5. 安全加固
 
 ```bash
 # 安全诊断
-docker exec -it moltbot moltbot doctor
+docker exec -it openclaw openclaw doctor
 
 # 启用认证
-docker exec -it moltbot moltbot security --enable-auth
+docker exec -it openclaw openclaw security --enable-auth
 
 # 配置 DM Pairing
-docker exec -it moltbot moltbot pairing
+docker exec -it openclaw openclaw pairing
 ```
 
 Docker 本身已提供一层隔离，但建议额外加固：
 
 ```bash
 # 使用更严格的安全选项重新创建容器
-docker stop moltbot && docker rm moltbot
+docker stop openclaw && docker rm openclaw
 
 docker run -d \
-  --name moltbot \
+  --name openclaw \
   --restart unless-stopped \
   --security-opt no-new-privileges \
   --read-only \
   --tmpfs /tmp \
   -e ANTHROPIC_API_KEY="your_key" \
   -e ANTHROPIC_BASE_URL="https://your-proxy.com/v1" \
-  -v moltbot_data:/root/.moltbot \
+  -v openclaw_data:/root/.openclaw \
   -p 127.0.0.1:3000:3000 \
   ghcr.io/openclaw/openclaw:latest
 ```
@@ -445,22 +445,22 @@ docker run -d \
 
 ```bash
 # 查看容器状态
-docker ps | grep moltbot
+docker ps | grep openclaw
 
 # 查看日志
-docker logs -f moltbot
+docker logs -f openclaw
 
 # 健康检查
-docker exec -it moltbot moltbot status
+docker exec -it openclaw openclaw status
 ```
 
 ### B-7. 如果在 VPS 上运行（额外步骤）
 
 ```bash
 # 1. 创建专用用户（不要用 root）
-sudo adduser moltbot-user
-sudo usermod -aG docker moltbot-user
-su - moltbot-user
+sudo adduser openclaw-user
+sudo usermod -aG docker openclaw-user
+su - openclaw-user
 
 # 2. 配置防火墙
 sudo ufw allow ssh
@@ -482,7 +482,7 @@ sudo ufw enable
 ```
 1. 注册 DigitalOcean 账号（https://www.digitalocean.com/）
 2. 创建新 Droplet
-3. 在 Marketplace 中搜索 "Moltbot" 一键镜像
+3. 在 Marketplace 中搜索 "OpenClaw" 一键镜像
 4. 选择配置规格：
    - 入门: 2 GB RAM / 1 vCPU / 50 GB SSD → $12/月
    - 推荐: 4 GB RAM / 2 vCPU / 80 GB SSD → $24/月
@@ -516,7 +516,7 @@ ssh root@your_droplet_ip
 
 ```bash
 # 运行向导，选 Anthropic
-moltbot onboard
+openclaw onboard
 # 选择 Anthropic → 粘贴 API Key → 选模型 → 完成
 ```
 
@@ -526,10 +526,10 @@ moltbot onboard
 
 ```bash
 # 先完成向导
-moltbot onboard
+openclaw onboard
 
 # 然后编辑配置文件
-nano ~/.moltbot/config.json
+nano ~/.openclaw/config.json
 ```
 
 在 `"env"` 中添加 `ANTHROPIC_BASE_URL`：
@@ -546,7 +546,7 @@ nano ~/.moltbot/config.json
 保存后重启：
 
 ```bash
-moltbot restart
+openclaw restart
 ```
 
 ---
@@ -565,10 +565,10 @@ openclaw onboard --auth-choice apiKey \
 
 ```bash
 # 先完成向导
-moltbot onboard
+openclaw onboard
 
 # 编辑配置
-nano ~/.moltbot/config.json
+nano ~/.openclaw/config.json
 ```
 
 ```json
@@ -590,7 +590,7 @@ nano ~/.moltbot/config.json
 }
 ```
 
-保存后 `moltbot restart`。
+保存后 `openclaw restart`。
 
 ---
 
@@ -598,29 +598,29 @@ nano ~/.moltbot/config.json
 
 ```bash
 # WhatsApp
-moltbot channels login whatsapp
+openclaw channels login whatsapp
 
 # Telegram
-moltbot channels login telegram
+openclaw channels login telegram
 
 # Discord
-moltbot channels login discord
+openclaw channels login discord
 ```
 
 ### C-5. 验证并使用
 
 ```bash
 # 状态检查
-moltbot status
+openclaw status
 
 # 健康诊断
-moltbot doctor
+openclaw doctor
 
 # 查看日志
-moltbot logs
+openclaw logs
 
 # 打开 Web Dashboard（浏览器访问 http://your_droplet_ip:3000）
-moltbot dashboard
+openclaw dashboard
 ```
 
 在你的通讯应用中发消息给 AI，开始使用！
@@ -636,7 +636,7 @@ moltbot dashboard
 
 ```
 1. 注册 Railway 账号（https://railway.app/）
-2. 搜索 Moltbot / OpenClaw 模板（或访问社区模板仓库）
+2. 搜索 OpenClaw 模板（或访问社区模板仓库）
 3. 点击 "Deploy on Railway"
 4. 设置环境变量（在 Railway 的 Variables 面板中）
 ```
@@ -740,7 +740,7 @@ OPENAI_BASE_URL = https://your-api-service.com/v1
 |----------|-------|------|
 | **config.json 文件** | 方案 A/B/C 手动编辑 | 永久生效，推荐 |
 | **环境变量** | 方案 B（Docker -e）/ 方案 D（Railway Variables） | 容器化和云平台首选 |
-| **配置向导** | 方案 A/C（moltbot onboard） | 交互式，适合首次 |
+| **配置向导** | 方案 A/C（openclaw onboard） | 交互式，适合首次 |
 | **CLI 参数** | 所有方案 | 一次性覆盖，测试用 |
 
 ---
@@ -750,26 +750,26 @@ OPENAI_BASE_URL = https://your-api-service.com/v1
 ### 常用命令
 
 ```bash
-moltbot status          # 查看运行状态
-moltbot doctor          # 健康诊断
-moltbot logs            # 查看日志
-moltbot config show     # 查看配置
-moltbot tui             # 终端交互界面
-moltbot dashboard       # 打开 Web Dashboard
-moltbot channels        # 查看已连接平台
-moltbot memory          # 查看记忆内容
-moltbot update          # 更新到最新版
-moltbot restart         # 重启服务
+openclaw status          # 查看运行状态
+openclaw doctor          # 健康诊断
+openclaw logs            # 查看日志
+openclaw config show     # 查看配置
+openclaw tui             # 终端交互界面
+openclaw dashboard       # 打开 Web Dashboard
+openclaw channels        # 查看已连接平台
+openclaw memory          # 查看记忆内容
+openclaw update          # 更新到最新版
+openclaw restart         # 重启服务
 ```
 
-> Docker 用户在命令前加 `docker exec -it moltbot`，如：`docker exec -it moltbot moltbot status`
+> Docker 用户在命令前加 `docker exec -it openclaw`，如：`docker exec -it openclaw openclaw status`
 
 ### Skills（技能）管理
 
 ```bash
-moltbot skills list                  # 列出可用技能
-moltbot skills enable skill-name     # 启用技能
-moltbot skills disable skill-name    # 禁用技能
+openclaw skills list                  # 列出可用技能
+openclaw skills enable skill-name     # 启用技能
+openclaw skills disable skill-name    # 禁用技能
 ```
 
 ### 与 AI 对话示例
@@ -801,13 +801,13 @@ moltbot skills disable skill-name    # 禁用技能
 | 检查项 | 操作 | 重要性 | 适用方案 |
 |--------|------|--------|---------|
 | ✅ 不要以 root 运行 | 创建专用用户 | 🔴 Critical | A / B / C |
-| ✅ 启用认证 | `moltbot security --enable-auth` | 🔴 Critical | A / B |
+| ✅ 启用认证 | `openclaw security --enable-auth` | 🔴 Critical | A / B |
 | ✅ 关闭公网管理端口 | 防火墙 / 绑定 localhost | 🔴 Critical | A / B |
-| ✅ 使用 DM Pairing | `moltbot pairing` | 🟠 High | 所有 |
+| ✅ 使用 DM Pairing | `openclaw pairing` | 🟠 High | 所有 |
 | ✅ Docker 隔离 | 容器化运行 | 🟠 High | B |
 | ✅ 审查第三方 Skills | 不要盲目安装 | 🟠 High | 所有 |
 | ✅ 限制文件系统访问 | 不给全盘权限 | 🟠 High | A |
-| ✅ 定期更新 | `moltbot update` | 🟡 Medium | 所有 |
+| ✅ 定期更新 | `openclaw update` | 🟡 Medium | 所有 |
 | ✅ 加密存储 | 敏感数据加密 | 🟡 Medium | 所有 |
 
 > 方案 C（DigitalOcean）大部分安全措施已自动配置。方案 D（Railway）运行在隔离环境中。
@@ -853,17 +853,17 @@ moltbot skills disable skill-name    # 禁用技能
 
 ### Q4: 数据存在哪里？
 
-- 对话历史、记忆、文件 → **本地** `~/.moltbot/` 目录（Docker 中在 volume 里）
+- 对话历史、记忆、文件 → **本地** `~/.openclaw/` 目录（Docker 中在 volume 里）
 - AI 推理请求 → 发送到你配置的 API 端点
 - 通讯平台消息 → 通过各平台官方协议传输
 
 ### Q5: 如何卸载？
 
 ```bash
-moltbot uninstall
+openclaw uninstall
 # 或
-npm uninstall -g moltbot
-# Docker: docker stop moltbot && docker rm moltbot
+npm uninstall -g openclaw
+# Docker: docker stop openclaw && docker rm openclaw
 ```
 
 ---
@@ -886,15 +886,15 @@ npm uninstall -g moltbot
 
 ## 参考来源
 
-- [Moltbot 官方 Wiki - Getting Started](https://moltbotwiki.com/getting-started.html) - 官方入门指南
-- [Moltbot 官方文档 - Model Providers](https://docs.clawd.bot/concepts/model-providers) - 模型配置文档
+- [OpenClaw 官方 Wiki - Getting Started](https://openclawwiki.com/getting-started.html) - 官方入门指南
+- [OpenClaw 官方文档 - Model Providers](https://docs.openclaw.ai/concepts/model-providers) - 模型配置文档
 - [OpenRouter - OpenClaw Integration](https://openrouter.ai/docs/guides/guides/openclaw-integration) - OpenRouter 集成指南
-- [APIYI - Moltbot API Proxy Tutorial](https://help.apiyi.com/en/moltbot-api-proxy-configuration-tutorial-en.html) - 第三方 API 代理配置教程
-- [DigitalOcean - How to Run MoltBot](https://www.digitalocean.com/community/tutorials/how-to-run-moltbot) - DigitalOcean 一键部署教程
-- [DigitalOcean - Moltbot Quickstart Guide](https://www.digitalocean.com/community/tutorials/moltbot-quickstart-guide) - 云端部署快速入门
+- [APIYI - OpenClaw API Proxy Tutorial](https://help.apiyi.com/en/openclaw-api-proxy-configuration-tutorial-en.html) - 第三方 API 代理配置教程
+- [DigitalOcean - How to Run OpenClaw](https://www.digitalocean.com/community/tutorials/how-to-run-openclaw) - DigitalOcean 一键部署教程
+- [DigitalOcean - OpenClaw Quickstart Guide](https://www.digitalocean.com/community/tutorials/openclaw-quickstart-guide) - 云端部署快速入门
 - [Dev.to - You Don't Need a Mac Mini](https://dev.to/sivarampg/you-dont-need-a-mac-mini-to-run-clawdbot-heres-how-to-run-it-anywhere-217l) - 硬件选择分析
 - [Dev.to - Moltworker Complete Guide](https://dev.to/sienna/moltworker-complete-guide-2026-running-personal-ai-agents-on-cloudflare-without-hardware-4a99) - Cloudflare 部署方案
 - [Discord - Custom Anthropic Base URL](https://www.answeroverflow.com/m/1465513231467417642) - 社区自定义 API URL 讨论
-- [Beebom - Setup Clawdbot on Mac Mini](https://beebom.com/how-to-set-up-clawdbot-moltbot-on-mac-mini/) - Mac Mini 部署教程
-- [DataCamp - Moltbot Tutorial](https://www.datacamp.com/tutorial/moltbot-clawdbot-tutorial) - 从 WhatsApp 控制电脑教程
-- [GrowthJockey - Moltbot Guide](https://www.growthjockey.com/blogs/clawdbot-moltbot) - 完整安装和架构指南
+- [Beebom - Setup OpenClaw on Mac Mini](https://beebom.com/how-to-set-up-openclaw-on-mac-mini/) - Mac Mini 部署教程
+- [DataCamp - OpenClaw Tutorial](https://www.datacamp.com/tutorial/openclaw-tutorial) - 从 WhatsApp 控制电脑教程
+- [GrowthJockey - OpenClaw Guide](https://www.growthjockey.com/blogs/openclaw) - 完整安装和架构指南
