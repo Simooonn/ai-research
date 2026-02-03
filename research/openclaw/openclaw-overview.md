@@ -1,4 +1,4 @@
-# Clawdbot (OpenClaw) 深度调研报告
+# OpenClaw 深度调研报告
 
 > 调研日期: 2026-02-01
 > 调研模式: Deep
@@ -11,7 +11,7 @@
 
 ## 核心概念
 
-### 什么是 Clawdbot / OpenClaw？
+### 什么是 OpenClaw？
 
 OpenClaw 是一个**开源、自托管的个人 AI 代理**（Personal AI Agent），核心理念是让大语言模型不仅能"说"，还能"做"。与传统聊天机器人不同，OpenClaw 具备以下关键能力：
 

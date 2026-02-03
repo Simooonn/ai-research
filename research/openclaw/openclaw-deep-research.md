@@ -1,18 +1,18 @@
-# Clawdbot (Moltbot) 深度调研报告
+# OpenClaw 深度调研报告
 
 > 日期：2026-01-31
 
 ## TL;DR
 
-Clawdbot（现已更名为 Moltbot）是由 PSPDFKit 创始人 Peter Steinberger 开发的**开源自托管个人 AI 助手**。它将 Claude AI 接入 WhatsApp、Telegram、Discord 等日常通讯应用，不仅能"对话"，还能在你的电脑上**执行真实操作**（运行命令、处理文件、发邮件、控制浏览器等）。2026 年 1 月爆火，24 小时内获得 9,000 GitHub Stars，一周内突破 **100,000 Stars**，成为 GitHub 历史上增长最快的开源项目之一。因 Anthropic 商标请求被迫更名为 Moltbot。虽然功能强大，但安全隐患不容忽视——大量企业实例暴露在公网且缺乏认证，存在凭据泄露、供应链攻击等风险。
+OpenClaw（原名 Clawdbot）是由 PSPDFKit 创始人 Peter Steinberger 开发的**开源自托管个人 AI 助手**。它将 Claude AI 接入 WhatsApp、Telegram、Discord 等日常通讯应用，不仅能"对话"，还能在你的电脑上**执行真实操作**（运行命令、处理文件、发邮件、控制浏览器等）。2026 年 1 月爆火，24 小时内获得 9,000 GitHub Stars，一周内突破 **100,000 Stars**，成为 GitHub 历史上增长最快的开源项目之一。因 Anthropic 商标请求被迫更名为 Moltbot。虽然功能强大，但安全隐患不容忽视——大量企业实例暴露在公网且缺乏认证，存在凭据泄露、供应链攻击等风险。
 
 ---
 
 ## 核心概念
 
-### 什么是 Clawdbot/Moltbot？
+### 什么是 OpenClaw？
 
-Clawdbot 是一个**本地运行的 AI Agent 平台**，核心理念是：
+OpenClaw 是一个**本地运行的 AI Agent 平台**，核心理念是：
 
 | 特性 | 说明 |
 |------|------|
@@ -25,7 +25,7 @@ Clawdbot 是一个**本地运行的 AI Agent 平台**，核心理念是：
 
 ### 与传统 AI 聊天的区别
 
-| 对比维度 | Clawdbot/Moltbot | 传统 AI Chat（ChatGPT/Claude Web） |
+| 对比维度 | OpenClaw | 传统 AI Chat（ChatGPT/Claude Web） |
 |----------|------------------|------------------------------------|
 | **使用方式** | 在日常聊天应用中直接使用 | 需要打开专门的网站 |
 | **对话记忆** | 跨平台持久记忆 | 会话通常独立 |
@@ -141,9 +141,9 @@ Clawdbot 是一个**本地运行的 AI Agent 平台**，核心理念是：
 
 ## 与竞品对比
 
-### Clawdbot/Moltbot vs Claude Code vs Cursor
+### OpenClaw vs Claude Code vs Cursor
 
-| 对比维度 | Clawdbot/Moltbot | Claude Code | Cursor |
+| 对比维度 | OpenClaw | Claude Code | Cursor |
 |----------|------------------|-------------|--------|
 | **定位** | 全能个人 AI 助手 | 终端原生 AI 编程工具 | AI-First IDE |
 | **交互方式** | 通讯应用（WhatsApp 等） | 终端 CLI | VS Code Fork GUI |
@@ -162,28 +162,28 @@ Clawdbot 是一个**本地运行的 AI Agent 平台**，核心理念是：
 
 ### Nate Herkelman 的评测评分（100 小时测试）
 
-| 指标 | Clawdbot | Claude Code | 说明 |
+| 指标 | OpenClaw | Claude Code | 说明 |
 |------|----------|-------------|------|
-| 开箱即用能力 | 9 | 7 | Clawdbot 功能更全面 |
+| 开箱即用能力 | 9 | 7 | OpenClaw 功能更全面 |
 | 设置摩擦与风险 | 6 | 8 | Claude Code 设置更简单安全 |
-| 成本 | 7 | 6 | Clawdbot 免费但有 API 费用 |
-| 功能与权限 | 9 | 7 | Clawdbot 系统级访问更深 |
-| 安全性 | 5 | 8 | Clawdbot 安全风险显著更高 |
+| 成本 | 7 | 6 | OpenClaw 免费但有 API 费用 |
+| 功能与权限 | 9 | 7 | OpenClaw 系统级访问更深 |
+| 安全性 | 5 | 8 | OpenClaw 安全风险显著更高 |
 | 日常可用性 | 8 | 7 | 通讯应用集成更便捷 |
 | 实际 ROI | 7 | 8 | Claude Code 编程场景 ROI 更高 |
-| **综合评价** | Claude Code 仍然胜出，但 Clawdbot 在非编程场景有独特优势 |
+| **综合评价** | Claude Code 仍然胜出，但 OpenClaw 在非编程场景有独特优势 |
 
 ---
 
 ## 安全风险深度分析 ⚠️
 
-朋友们，这个部分**非常非常关键**！安全问题是 Clawdbot 目前最大的隐患。
+朋友们，这个部分**非常非常关键**！安全问题是 OpenClaw 目前最大的隐患。
 
 ### 🚨 已发现的安全问题
 
 #### 1. 暴露的管理面板（Critical）
 
-- 安全研究人员发现**数百个 Clawdbot Control 管理面板**暴露在公网
+- 安全研究人员发现**数百个 OpenClaw Control 管理面板**暴露在公网
 - 反向代理配置错误导致未经认证即可访问
 - 可查看：API 密钥、OAuth Token、完整对话历史、文件交换记录
 - **来源**：[BleepingComputer](https://www.bleepingcomputer.com/news/security/viral-moltbot-ai-assistant-raises-concerns-over-data-security/)、[Bitdefender](https://www.bitdefender.com/en-us/blog/hotforsecurity/moltbot-security-alert-exposed-clawdbot-control-panels-risk-credential-leaks-and-account-takeovers)
@@ -215,25 +215,25 @@ Clawdbot 是一个**本地运行的 AI Agent 平台**，核心理念是：
 
 | 建议 | 说明 |
 |------|------|
-| ✅ 强制认证 | 所有 Moltbot 服务必须启用强认证 |
+| ✅ 强制认证 | 所有 OpenClaw 服务必须启用强认证 |
 | ✅ 关闭管理端口 | 防火墙封锁管理端口，禁止公网访问 |
 | ✅ 加密存储 | 启用静态加密存储敏感凭据 |
 | ✅ 沙箱隔离 | 容器化运行，限制系统权限 |
 | ✅ 审计 Skills | 谨慎安装第三方 Skills，审查来源 |
 | ✅ 最小权限 | 不要赋予 root 权限，按需授权 |
-| ⚠️ 企业管控 | 安全团队应监控 Moltbot 在内部的部署情况 |
+| ⚠️ 企业管控 | 安全团队应监控 OpenClaw 在内部的部署情况 |
 
 ---
 
 ## 最新动态（2026 年 1 月）
 
-1. **🦞 更名为 Moltbot**（2026-01-27）：因 Anthropic 商标请求更名，"Molt"取龙虾蜕壳之意。网站从 `clawd.bot` 迁移至 `molt.bot`
+1. **🦞 更名历程：Clawdbot → Moltbot → OpenClaw**（2026-01-27）：因 Anthropic 商标请求更名，"Molt"取龙虾蜕壳之意。网站从 `clawd.bot` 迁移至 `molt.bot`，后最终更名为 OpenClaw
 2. **⭐ 突破 100,000 GitHub Stars**（2026-01-28）：成为 GitHub 历史上增长最快的项目之一
 3. **☁️ Cloudflare Moltworker**（2026-01-28）：Cloudflare 发布基于 Workers 的自托管方案，无需 Mac Mini
 4. **🚨 安全警报频发**（2026-01-27~28）：多家安全公司（Noma、Bitdefender、SOC Prime、BleepingComputer）发布安全警告
 5. **🎯 Mac Mini 销量暴增**：因用户寻找专用运行设备，间接推动了 Mac Mini 的销售
 6. **👏 业界认可**：AI 研究者 Andrej Karpathy 公开称赞；MacStories 称其为"个人 AI 助手的未来"
-7. **💰 投资人关注**：Chamath Palihapitiya 分享 Moltbot 帮他省了 15% 车险费用
+7. **💰 投资人关注**：Chamath Palihapitiya 分享 OpenClaw 帮他省了 15% 车险费用
 
 ---
 
@@ -282,9 +282,9 @@ curl -fsSL https://get.molt.bot | bash
 #### 方式二：Docker 部署
 
 ```bash
-docker run -d --name moltbot \
+docker run -d --name openclaw \
   -e ANTHROPIC_API_KEY=your_key \
-  -v moltbot_data:/data \
+  -v openclaw_data:/data \
   ghcr.io/openclaw/openclaw:latest
 ```
 
@@ -343,12 +343,12 @@ openclaw configure --bind localhost
 - **安全性严重不足**：明文凭据、暴露端口、供应链风险
 - **项目极度年轻**：2025 年底才开始，稳定性待验证
 - **设置复杂度较高**：对非技术用户不友好
-- **命名/品牌混乱**：经历 Clawdbot → Moltbot 更名，社区认知混乱
+- **命名/品牌混乱**：经历 Clawdbot → Moltbot → OpenClaw 多次更名，社区认知混乱
 - **企业就绪度低**：缺乏审计、合规、权限管理等企业级特性
 
 ### 前景判断
 
-Clawdbot/Moltbot 代表了**个人 AI Agent 的重要方向**——将 AI 从网页聊天窗口解放出来，融入用户的真实工作和生活场景。100K Stars 的爆发式增长证明了市场需求的真实存在。但目前它更像是一个**精彩的技术原型**，距离生产级安全可靠还有相当长的路要走。
+OpenClaw 代表了**个人 AI Agent 的重要方向**——将 AI 从网页聊天窗口解放出来，融入用户的真实工作和生活场景。100K Stars 的爆发式增长证明了市场需求的真实存在。但目前它更像是一个**精彩的技术原型**，距离生产级安全可靠还有相当长的路要走。
 
 **建议：可以作为个人学习和探索使用，暂不建议在企业环境或敏感场景部署。**
 
@@ -356,9 +356,9 @@ Clawdbot/Moltbot 代表了**个人 AI Agent 的重要方向**——将 AI 从网
 
 ## 参考来源
 
-- [GitHub - openclaw/openclaw](https://github.com/clawdbot/clawdbot) - 官方 GitHub 仓库
-- [Moltbot 官方文档](https://docs.molt.bot/) - 架构与使用文档
-- [How Moltbot Works](https://moltbot.you/how-moltbot-works.html) - 技术深度分析
+- [GitHub - openclaw/openclaw](https://github.com/clawdbot/clawdbot) - 官方 GitHub 仓库（原 clawdbot/clawdbot，已重定向）
+- [OpenClaw 官方文档](https://docs.openclaw.ai/) - 架构与使用文档
+- [How OpenClaw Works](https://openclaw.ai/how-moltbot-works.html) - 技术深度分析
 - [Mashable: Clawdbot is now Moltbot](https://mashable.com/article/clawdbot-changes-name-to-moltbot) - 更名报道
 - [36Kr: Clawdbot Hits 100,000+ Stars](https://eu.36kr.com/en/p/3661357114942337) - Stars 突破 10 万
 - [BleepingComputer: Viral Moltbot raises concerns](https://www.bleepingcomputer.com/news/security/viral-moltbot-ai-assistant-raises-concerns-over-data-security/) - 安全风险报道
@@ -370,5 +370,5 @@ Clawdbot/Moltbot 代表了**个人 AI Agent 的重要方向**——将 AI 从网
 - [DataCamp: Moltbot Tutorial](https://www.datacamp.com/tutorial/moltbot-clawdbot-tutorial) - 入门教程
 - [Analytics Vidhya: Clawdbot Guide](https://www.analyticsvidhya.com/blog/2026/01/clawdbot-guide/) - 实测指南
 - [Dev.to: From Clawdbot to Moltbot](https://dev.to/sivarampg/from-clawdbot-to-moltbot-how-a-cd-crypto-scammers-and-10-seconds-of-chaos-took-down-the-4eck) - 更名风波全记录
-- [Nate Herkelman: 100 Hours Testing](https://www.youtube.com/watch?v=CBNbcbMs_Lc) - Clawdbot vs Claude Code 100 小时对比评测
+- [Nate Herkelman: 100 Hours Testing](https://www.youtube.com/watch?v=CBNbcbMs_Lc) - OpenClaw vs Claude Code 100 小时对比评测
 - [Medium: Production Guide](https://alirezarezvani.medium.com/everyones-installing-moltbot-clawdbot-here-s-why-i-m-not-running-it-in-production-yet-04f9ec596ef5) - 生产环境部署评估
