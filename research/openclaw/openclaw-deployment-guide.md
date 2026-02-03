@@ -179,7 +179,7 @@ openclaw onboard --install-daemon
 保存后重启：
 
 ```bash
-openclaw restart
+openclaw gateway restart
 ```
 
 ---
@@ -546,7 +546,7 @@ nano ~/.openclaw/config.json
 保存后重启：
 
 ```bash
-openclaw restart
+openclaw gateway restart
 ```
 
 ---
@@ -590,7 +590,7 @@ nano ~/.openclaw/config.json
 }
 ```
 
-保存后 `openclaw restart`。
+保存后 `openclaw gateway restart`。
 
 ---
 
@@ -759,7 +759,7 @@ openclaw dashboard       # 打开 Web Dashboard
 openclaw channels        # 查看已连接平台
 openclaw memory          # 查看记忆内容
 openclaw update          # 更新到最新版
-openclaw restart         # 重启服务
+openclaw gateway restart # 重启服务
 ```
 
 > Docker 用户在命令前加 `docker exec -it openclaw`，如：`docker exec -it openclaw openclaw status`
