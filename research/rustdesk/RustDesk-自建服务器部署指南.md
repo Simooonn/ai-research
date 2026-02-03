@@ -242,42 +242,26 @@ mkdir -p data
 创建 `docker-compose.yml` 文件：
 
 ```yaml
-version: '3'
-
-networks:
-  rustdesk-net:
-    external: false
-
-services:
-  hbbs:
-    container_name: hbbs
-    image: rustdesk/rustdesk-server:latest
-    command: hbbs -r 16.162.60.39:21117
-    ports:
-      - 21115:21115
-      - 21116:21116
-      - 21116:21116/udp
-      - 21118:21118
-    volumes:
-      - ./data:/root
-    networks:
-      - rustdesk-net
-    depends_on:
-      - hbbr
-    restart: unless-stopped
-
-  hbbr:
-    container_name: hbbr
-    image: rustdesk/rustdesk-server:latest
-    command: hbbr
-    ports:
-      - 21117:21117
-      - 21119:21119
-    volumes:
-      - ./data:/root
-    networks:
-      - rustdesk-net
-    restart: unless-stopped
+version: '3'                                                                                                                                            
+                                                                                                                                                        
+services:                                                                                                                                               
+  hbbs:                                                                                                                                                 
+    container_name: hbbs                                                                                                                                
+    image: rustdesk/rustdesk-server:latest                                                                                                              
+    command: hbbs -r 16.162.60.39:21117                                                                                                                 
+    network_mode: "host"                                                                                                                                
+    volumes:                                                                                                                                            
+      - ./data:/root                                                                                                                                    
+    restart: unless-stopped                                                                                                                             
+                                                                                                                                                        
+  hbbr:                                                                                                                                                 
+    container_name: hbbr                                                                                                                                
+    image: rustdesk/rustdesk-server:latest                                                                                                              
+    command: hbbr                                                                                                                                       
+    network_mode: "host"                                                                                                                                
+    volumes:                                                                                                                                            
+      - ./data:/root                                                                                                                                    
+    restart: unless-stopped 
 ```
 
 > **重要**：将 `16.162.60.39` 替换为你的服务器公网 IP 地址。
