@@ -694,14 +694,255 @@ pnpm gateway:watch
 
 ---
 
+## 守护进程管理（重启后如何启动）
+
+OpenClaw 使用守护进程在后台运行 Gateway，电脑重启后会自动启动。如果需要手动管理：
+
+### macOS（launchd）
+
+```bash
+# 查看服务状态
+launchctl list | grep openclaw
+
+# 停止服务
+launchctl unload ~/Library/LaunchAgents/com.openclaw.gateway.plist
+
+# 启动服务
+launchctl load ~/Library/LaunchAgents/com.openclaw.gateway.plist
+
+# 重启服务（先停后启）
+launchctl unload ~/Library/LaunchAgents/com.openclaw.gateway.plist && \
+launchctl load ~/Library/LaunchAgents/com.openclaw.gateway.plist
+```
+
+### Linux（systemd）
+
+```bash
+# 查看服务状态
+systemctl --user status openclaw-gateway
+
+# 停止服务
+systemctl --user stop openclaw-gateway
+
+# 启动服务
+systemctl --user start openclaw-gateway
+
+# 重启服务
+systemctl --user restart openclaw-gateway
+
+# 查看日志
+journalctl --user -u openclaw-gateway -f
+
+# 禁止开机自启
+systemctl --user disable openclaw-gateway
+
+# 重新启用开机自启
+systemctl --user enable openclaw-gateway
+```
+
+### 使用 CLI 管理守护进程
+
+```bash
+# 安装守护进程（如果之前没装）
+openclaw daemon install
+
+# 卸载守护进程（停止自动启动）
+openclaw daemon uninstall
+
+# 查看 Gateway 状态
+openclaw status
+
+# 手动启动 Gateway（非守护进程模式，关闭终端会停止）
+openclaw gateway --port 18789 --verbose
+```
+
+### 如果守护进程没有自动启动
+
+电脑重启后如果 OpenClaw 没有自动运行，依次检查：
+
+1. **确认守护进程已安装**：
+   ```bash
+   # macOS
+   ls ~/Library/LaunchAgents/ | grep openclaw
+
+   # Linux
+   ls ~/.config/systemd/user/ | grep openclaw
+   ```
+
+2. **重新安装守护进程**：
+   ```bash
+   openclaw daemon install
+   ```
+
+3. **手动启动服务**（见上方平台对应命令）
+
+4. **运行健康检查**：
+   ```bash
+   openclaw doctor
+   ```
+
+---
+
+## 完整卸载 OpenClaw
+
+### 方法一：使用 CLI 卸载（推荐）
+
+```bash
+# 一键卸载（会询问确认）
+openclaw uninstall
+```
+
+这个命令会自动完成：
+- 停止 Gateway 服务
+- 卸载守护进程
+- 删除全局安装的 CLI
+
+### 方法二：手动完整卸载
+
+如果 CLI 命令不可用，按以下步骤手动卸载：
+
+**步骤 1：停止并卸载守护进程**
+
+```bash
+# macOS
+launchctl unload ~/Library/LaunchAgents/com.openclaw.gateway.plist
+rm ~/Library/LaunchAgents/com.openclaw.gateway.plist
+
+# Linux
+systemctl --user stop openclaw-gateway
+systemctl --user disable openclaw-gateway
+rm ~/.config/systemd/user/openclaw-gateway.service
+systemctl --user daemon-reload
+```
+
+**步骤 2：卸载 npm 全局包**
+
+```bash
+npm uninstall -g openclaw
+
+# 或者如果用 pnpm 安装的
+pnpm remove -g openclaw
+```
+
+### 方法三：源码安装的卸载
+
+如果你是通过 `git clone` + `pnpm build` 从源码安装的，按以下步骤卸载：
+
+```bash
+# 1. 停止守护进程
+# macOS
+launchctl unload ~/Library/LaunchAgents/com.openclaw.gateway.plist 2>/dev/null
+rm -f ~/Library/LaunchAgents/com.openclaw.gateway.plist
+
+# Linux
+systemctl --user stop openclaw-gateway 2>/dev/null
+systemctl --user disable openclaw-gateway 2>/dev/null
+rm -f ~/.config/systemd/user/openclaw-gateway.service
+systemctl --user daemon-reload
+
+# 2. 删除源码目录（假设在 ~/openclaw）
+rm -rf ~/openclaw
+# 或者你 clone 到的实际路径
+# rm -rf /path/to/your/openclaw
+
+# 3. 删除配置和数据目录
+rm -rf ~/.openclaw
+rm -rf ~/.clawdbot
+rm -rf ~/.moltbot
+rm -rf ~/.molthub
+
+# 4. 如果你在源码目录执行过 pnpm link，还需要取消链接
+pnpm unlink openclaw 2>/dev/null
+
+# 5. 清理 pnpm 全局缓存（可选）
+pnpm store prune
+```
+
+**验证源码安装已卸载**：
+
+```bash
+# 确认源码目录已删除
+ls ~/openclaw  # 应该报错
+
+# 确认没有残留进程
+ps aux | grep openclaw
+
+# 确认配置目录已删除
+ls ~/.openclaw  # 应该报错
+```
+
+**步骤 3：删除配置和数据目录**
+
+```bash
+# 删除 OpenClaw 主目录（包含配置、会话、记忆等）
+rm -rf ~/.openclaw
+
+# 如果之前用过旧版本，也要删除这些目录
+rm -rf ~/.clawdbot
+rm -rf ~/.moltbot
+rm -rf ~/.molthub
+```
+
+**步骤 4：撤销 OAuth 令牌（重要！）**
+
+如果你使用了 OAuth 连接（如 Google、Slack、Discord），需要手动撤销授权：
+
+| 平台 | 撤销位置 |
+|------|---------|
+| **Google** | [myaccount.google.com/permissions](https://myaccount.google.com/permissions) |
+| **Slack** | Slack App 设置 → 已连接应用 |
+| **Discord** | 用户设置 → 已授权应用 |
+| **Telegram** | 无需撤销（Bot Token 删除即可） |
+
+**步骤 5：验证卸载完成**
+
+```bash
+# 确认 CLI 已卸载
+which openclaw  # 应该无输出
+
+# 确认进程已停止
+ps aux | grep openclaw  # 应该没有相关进程
+
+# 确认目录已删除
+ls ~/.openclaw  # 应该报错"No such file or directory"
+```
+
+### 卸载后重新安装
+
+如果你想重新安装：
+
+```bash
+# 重新安装
+curl -fsSL https://openclaw.ai/install.sh | bash
+
+# 或 npm
+npm install -g openclaw@latest
+
+# 重新配置
+openclaw onboard --install-daemon
+```
+
+---
+
 ## CLI 命令速查
 
 ```bash
+# 安装与配置
 openclaw onboard --install-daemon       # 引导安装 + 守护进程
+openclaw daemon install                 # 单独安装守护进程
+openclaw daemon uninstall               # 卸载守护进程
+openclaw uninstall                      # 完整卸载
+
+# 运行与状态
 openclaw gateway --port 18789 --verbose # 启动网关（详细日志）
+openclaw status                         # 查看运行状态
 openclaw doctor                         # 健康检查
+
+# 日常使用
 openclaw agent --message "..." --thinking high  # CLI 对话
 openclaw message send --to <目标> --message "..." # 发送消息
 openclaw pairing approve <channel> <code>        # 批准配对
+
+# 更新与维护
 openclaw update --channel stable|beta|dev        # 更新版本
 ```
