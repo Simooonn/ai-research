@@ -1,1 +1,5 @@
-.claude/
+# Spec Workflow - keep steering & specs docs, ignore auto-generated
+.spec-workflow/templates/
+.spec-workflow/approvals/
+.claude
+.playwright-mcp
